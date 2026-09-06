@@ -1,4 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Eslatma ko'rsatish (Android 13+ uchun runtime'da ham so'raladi) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- Aniq vaqtli alarm (Android 12+, foydalanuvchi sozlamalardan tasdiqlaydi) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <!-- Telefon qayta yonganda eslatmalarni tiklash -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <application
         android:label="daloil_ul_hayrot"
         android:name="${applicationName}"

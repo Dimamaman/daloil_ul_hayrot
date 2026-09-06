@@ -54,6 +54,23 @@ class SettingsBottomSheet extends StatelessWidget {
                 onChanged: (v) =>
                     context.read<ReaderBloc>().add(LineHeightChanged(v)),
               ),
+              const SizedBox(height: 16),
+              SwitchListTile(
+                title: const Text('Transliteratsiya'),
+                contentPadding: EdgeInsets.zero,
+                value: state.showTransliteration,
+                onChanged: (_) => context
+                    .read<ReaderBloc>()
+                    .add(const TransliterationToggled()),
+              ),
+              SwitchListTile(
+                title: const Text('Tarjima'),
+                contentPadding: EdgeInsets.zero,
+                value: state.showTranslation,
+                onChanged: (_) => context
+                    .read<ReaderBloc>()
+                    .add(const TranslationToggled()),
+              ),
             ],
           ),
         );

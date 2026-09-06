@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "hizbs": [
+    {
+      "id": "hizb_1",
+      "order": 1,
+      "title": "الحزب الأوّل",
+      "titleUz": "Birinchi hizb",
+      "sections": [
+        {
+          "id": "h1_s1",
+          "type": "salavot",
+          "title": "الصلاة على النبي ﷺ",
+          "titleUz": "Payg'ambarga salavot",
+          "arabic": "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ وَعَلَى آلِهِ وَصَحْبِهِ أَجْمَعِينَ",
+          "transliteration": "Allohumma solli va sallim 'ala sayyidina Muhammadin va 'ala alihi va sahbihi ajma'iyn",
+          "translation": "Allohim, sayyidimiz Muhammadga va U Zotning barcha ahl va sahobalariga salovat va salom yo'lla"
+        },
+        {
+          "id": "h1_s2",
+          "type": "duo",
+          "title": "دعاء الافتتاح",
+          "titleUz": "Ochilish duosi",
+          "arabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّهِ ٱلْعَلِيِّ ٱلْعَظِيمِ",
+          "transliteration": null,
+          "translation": null
+        }
+      ]
+    },
+    {
+      "id": "hizb_2",
+      "order": 2,
+      "title": "الحزب الثاني",
+      "titleUz": "Ikkinchi hizb",
+      "sections": [
+        {
+          "id": "h2_s1",
+          "type": "salavot",
+          "title": "صلاة النور",
+          "titleUz": "Nur salavoti",
+          "arabic": "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ نُورِ الْأَنْوَارِ وَسِرِّ الْأَسْرَارِ",
+          "transliteration": null,
+          "translation": null
+        }
+      ]
+    }
+  ]
+}
