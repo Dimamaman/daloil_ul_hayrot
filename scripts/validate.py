@@ -31,15 +31,23 @@ TASHKIL_RANGE = set(range(0x064B, 0x0653)) | {0x0670}
 # Asosiy arab harflari (tashkil va raqamlardan tashqari)
 ARABIC_LETTER_CATS = {"Lo", "Lm"}
 
-# Tashkil nisbati — bu qiymatdan past bo'lsa, ogohlantirish
-TASHKIL_MIN_RATIO = 0.3
+# Tashkil nisbati chegaralari
+TASHKIL_ERROR_RATIO = 0.15   # bundan past → XATO (deyarli harakatsiz)
+TASHKIL_WARN_RATIO = 0.30    # bundan past → ogohlantirish
 
 
 class Validator:
-    def __init__(self, strict: bool = False):
+    def __init__(
+        self,
+        strict: bool = False,
+        tashkil_error: float = TASHKIL_ERROR_RATIO,
+        tashkil_warn: float = TASHKIL_WARN_RATIO,
+    ):
         self.errors: list[str] = []
         self.warnings: list[str] = []
         self.strict = strict
+        self.tashkil_error = tashkil_error
+        self.tashkil_warn = tashkil_warn
         self.stats = {"draft": 0, "proofread": 0, "verified": 0, "unknown": 0}
 
     def check_required(self, entry: dict, loc: str) -> None:
@@ -121,10 +129,25 @@ class Validator:
             return
 
         ratio = tashkil_count / letter_count
-        if ratio < TASHKIL_MIN_RATIO:
+        status = entry.get("status", "")
+        detail = (
+            f"{ratio:.1%} ({tashkil_count} harakat / {letter_count} harf), "
+            f"status={status}"
+        )
+
+        # proofread/verified matnda tashkil_warn dan past → har doim XATO
+        if status in ("proofread", "verified") and ratio < self.tashkil_warn:
+            self.errors.append(
+                f"{loc}: tekshirilgan matnda tashkil yetarli emas — {detail}"
+            )
+        elif ratio < self.tashkil_error:
+            self.errors.append(
+                f"{loc}: tashkil juda past — {detail}. "
+                f"Matn deyarli harakatsiz, ilovaga yaramaydi"
+            )
+        elif ratio < self.tashkil_warn:
             self.warnings.append(
-                f"{loc}: tashkil nisbati past — {ratio:.1%} "
-                f"({tashkil_count} harakat / {letter_count} harf). "
+                f"{loc}: tashkil nisbati past — {detail}. "
                 f"Kiritishda harakat tushib qolgan bo'lishi mumkin"
             )
 
@@ -187,10 +210,22 @@ def main() -> int:
         "--strict", action="store_true",
         help="Ogohlantirishlarni ham xato sifatida hisoblash"
     )
+    parser.add_argument(
+        "--tashkil-error", type=float, default=TASHKIL_ERROR_RATIO,
+        help=f"Tashkil XATO chegarasi (default: {TASHKIL_ERROR_RATIO})"
+    )
+    parser.add_argument(
+        "--tashkil-warn", type=float, default=TASHKIL_WARN_RATIO,
+        help=f"Tashkil ogohlantirish chegarasi (default: {TASHKIL_WARN_RATIO})"
+    )
     args = parser.parse_args()
 
     files = collect_files(args.input)
-    validator = Validator(strict=args.strict)
+    validator = Validator(
+        strict=args.strict,
+        tashkil_error=args.tashkil_error,
+        tashkil_warn=args.tashkil_warn,
+    )
     all_ids: dict[str, str] = {}  # id → fayl nomi
     total_entries = 0
 
